@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vuejs Timeline</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: #456990;
+            color: #fff;
+            overflow-x: hidden;
+            padding-bottom: 50px;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        [v-cloak] { display: none; }
+
+        /* TIMELINE
+    –––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+        .timeline ul {
+            background: #456990;
+            padding: 50px 0;
+        }
+
+        .timeline ul li {
+            list-style-type: none;
+            position: relative;
+            width: 6px;
+            margin: 0 auto;
+            padding-top: 20px;
+            background: #fff;
+        }
+
+        .timeline ul li::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 32px;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: inherit;
+        }
+
+        .timeline ul li div {
+            position: relative;
+            bottom: 0;
+            width: 400px;
+            padding: 15px;
+            background: #F45B69;
+        }
+
+        .timeline ul li div::before {
+            content: '';
+            position: absolute;
+            /*bottom: 2px;*/
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+
+        .timeline ul li:nth-child(odd) div {
+            left: 45px;
+        }
+
+        .timeline ul li:nth-child(odd) div::before {
+            left: -15px;
+            border-width: 8px 16px 8px 0;
+            border-color: transparent #F45B69 transparent transparent;
+        }
+
+        .timeline ul li:nth-child(even) div {
+            left: -439px;
+        }
+
+        .timeline ul li:nth-child(even) div::before {
+            right: -15px;
+            border-width: 8px 0 8px 16px;
+            border-color: transparent transparent transparent #F45B69;
+        }
+
+        time {
+            display: block;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .year {
+            position: absolute;
+            top: 0px;
+            left: -20px;
+            background: #F45B69;
+            padding: 4px 6px;
+            border-radius: 2px
+        }
+
+        .li-spacer {
+            padding-top: 40px !important;
+        }
+
+        .li-spacer .year {
+            /*top: -7px;*/
+        }
+
+        .timeline ul li.li-spacer::after {
+            top: 52px;
+        }
+
+
+        /* EFFECTS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+        .timeline ul li::after {
+            transition: background .5s ease-in-out;
+        }
+
+        .timeline ul li.in-view::after {
+            background: #F45B69;
+        }
+
+        .timeline ul li div {
+            visibility: hidden;
+            opacity: 0;
+            transition: all .5s ease-in-out;
+        }
+
+        .timeline ul li:nth-child(odd) div {
+            transform: translate3d(200px, 0, 0);
+        }
+
+        .timeline ul li:nth-child(even) div {
+            transform: translate3d(-200px, 0, 0);
+        }
+
+        .timeline ul li.in-view div {
+            transform: none;
+            visibility: visible;
+            opacity: 1;
+        }
+
+
+        /* GENERAL MEDIA QUERIES
+    –––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+        @media screen and (max-width: 900px) {
+            .timeline ul li div {
+                width: 250px;
+            }
+            .timeline ul li:nth-child(even) div {
+                left: -289px;
+                /*250+45-6*/
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            .timeline ul li {
+                margin-left: 20px;
+            }
+            .timeline ul li div {
+                width: calc(100vw - 91px);
+            }
+            .timeline ul li:nth-child(even) div {
+                left: 45px;
+            }
+            .timeline ul li:nth-child(even) div::before {
+                left: -15px;
+                border-width: 8px 16px 8px 0;
+                border-color: transparent #F45B69 transparent transparent;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <!--<button v-on:click.prevent="itemsFilter('') | yearFilter()">click</button>
+        <button v-on:click.prevent="itemsFilter('websites') | yearFilter()">click</button>
+        <button v-on:click.prevent="itemsFilter('cat2') | yearFilter()">click</button>-->
+        <div class="container">
+            <div class="notification">
+                <div class="select" v-cloak>
+                    <select v-model="selected">
+                        <option v-for="option in options" v-bind:value="option.value">
+                            {{ option.text }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <section class="timeline">
+            <ul>
+                <template v-for="item in items">
+                    <li v-bind:class="{ 'li-spacer': item.yearshow }">
+                        <span v-show="item.yearshow" class="year">{{ item.year }}</span>
+                        <div><time>{{ item.year }}</time> {{ item.title }}</div>
+                    </li>
+                </template>
+            </ul>
+        </section>
+    </div>
+
+    <script src="https://vuejs.org/js/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                list: [
+                    { year: '2017', title: 'Foo 2017', cat: 'Web Sites' },
+                    { year: '2017', title: 'Foo2 2017', cat: 'Web Applications' },
+                    { year: '2016', title: 'Foo3 2016', cat: 'Web Sites' },
+                    { year: '2016', title: 'Foo4 2016', cat: 'Web Applications' },
+                    { year: '2016', title: 'Foo4 2016', cat: 'Web Applications' },
+                    { year: '2016', title: 'Foo4 2016', cat: 'Web Applications' },
+                    { year: '2016', title: 'Foo4 2016', cat: 'Web Applications' },
+                    { year: '2015', title: 'Foo4 2016', cat: 'Web Applications' },
+                    { year: '2015', title: 'Foo4 2016', cat: 'Web Applications' },
+                    { year: '2015', title: 'Foo4 2016', cat: 'Web Applications' },
+                    { year: '2015', title: 'Foo4 2016', cat: 'Web Applications' },
+                    { year: '2015', title: 'Foo4 2016', cat: 'Web Applications' },
+                    { year: '2015', title: 'Foo4 2016', cat: 'Web Applications' },
+                    { year: '2014', title: 'Foo4 2016', cat: 'Music Projects' },
+                    { year: '2014', title: 'Foo4 2016', cat: 'Music Projects' },
+                    { year: '2014', title: 'Foo4 2016', cat: 'Music Projects' },
+                    { year: '2014', title: 'Foo4 2016', cat: 'Music Projects' },
+                    { year: '2014', title: 'Foo4 2016', cat: 'Music Projects' },
+                    { year: '2014', title: 'Foo4 2016', cat: 'Music Projects' },
+                    { year: '2014', title: 'Foo4 2016', cat: 'Music Projects' },
+                ],
+                items: '',
+                selected: '',
+                options: [
+                    { 'text': 'All projects', 'value': '' }
+                ]
+            },
+            created: function () {
+                window.addEventListener('scroll', this.renderItems);
+            },
+            mounted: function () {
+                this.items = this.list;
+
+                var optionsFromList = this.items.filter( function (item, index, self) {
+                    return index === self.findIndex((i) => (
+                        i.cat === item.cat
+                    ))
+                }).map(function(item) {
+                    var option = {};
+                    option.text = item.cat;
+                    option.value = item.cat.trim();
+                    return option;
+                });
+                Array.prototype.push.apply(this.options, optionsFromList);
+
+                this.yearFilter();
+            },
+            watch: {
+                selected: function (selected) {
+                    this.itemsFilter(selected);
+                }
+            },
+            updated: function () {
+                this.$nextTick(function () {
+                    this.hideItemsBeforeRender();
+                    this.renderItems();
+                })
+            },
+            methods: {
+                itemsFilter: function (sort) {
+                    this.items = this.list;
+
+                    this.items = this.items.filter(function (item) {
+                        var re = new RegExp(sort, 'g');
+                        return item.cat.match(re)
+                    })
+                    this.yearFilter();
+                },
+                yearFilter: function (sort) {
+                    var current;
+                    var i = 0;
+                    this.items = this.items.filter(function (item) {
+                        item.yearshow = false;
+                        if (i == 0) {
+                            current = item.year;
+                            item.yearshow = true;
+                        }
+                        if (current != item.year) {
+                            item.yearshow = true;
+                            current = item.year;
+                        }
+                        i++;
+                        return item;
+                    })
+                },
+                isElementInViewport: function (el) {
+                    var rect = el.getBoundingClientRect();
+                    return (
+                        rect.top >= 0 &&
+                        rect.left >= 0 &&
+                        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                    );
+                },
+                hideItemsBeforeRender: function () {
+                    var items = this.$el.querySelectorAll(".timeline li");
+                    for (var i = 0; i < items.length; i++) {
+                        items[i].classList.remove("in-view");
+                    }
+                },
+                renderItems: function () {
+                    var items = this.$el.querySelectorAll(".timeline li");
+                    setTimeout(() => {
+                        for (var i = 0; i < items.length; i++) {
+                            if (this.isElementInViewport(items[i])) {
+                                items[i].classList.add("in-view");
+                            }
+                        }
+                    }, 500);
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
