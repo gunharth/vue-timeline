@@ -12,11 +12,12 @@ let mix = require('laravel-mix');
  */
 
 mix
-  .setPublicPath('dist')
-  //.sass('resources/assets/sass/styles.scss','public/css/styles.css')
-  //.js('s/assets/js/site.js','public/js/site.js')
-    //.extract(['jquery', 'bootstrap-sass', 'waypoints', 'countTo', 'skrollr'])
-    .browserSync({ proxy: 'http://vue-timeline.dev'});
+  .js('src/js/app.js', 'dist/app.js')
+  .copy('src/css/styles.css', 'dist/styles.css')
+  .browserSync({ 
+    proxy: 'http://vue-timeline.dev',
+    files: ['*', 'src/**/*']
+  });
 
 // Full API
 // mix.js(src, output);
