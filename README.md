@@ -1,9 +1,10 @@
-# vue-timeline
+# vue-timeline - wip
 
 
 
-https://www.json-generator.com
+For the json data file I used https://www.json-generator.com
 
+```js
 [
   '{{repeat(98, 100)}}',
   {
@@ -12,3 +13,4 @@ https://www.json-generator.com
     cat: '{{random("Category 1", "Category 2", "Category 3")}}'
   }
 ]
+```
