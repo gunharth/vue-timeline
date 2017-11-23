@@ -1,29 +1,30 @@
+import moment from 'moment';
 window.Vue = require('vue');
 
 const app = new Vue({
     el: '#app',
     data: {
         list: [
-            { year: '2018', title: 'Foo 2017', cat: 'Web Sites' },
-            { year: '2017', title: 'Foo2 2017', cat: 'Web Applications' },
-            { year: '2017', title: 'Foo3 2016', cat: 'Web Sites' },
-            { year: '2017', title: 'Foo4 2016', cat: 'Web Applications' },
-            { year: '2017', title: 'Foo4 2016', cat: 'Web Applications' },
-            { year: '2016', title: 'Foo4 2016', cat: 'Web Applications' },
-            { year: '2016', title: 'Foo4 2016', cat: 'Web Applications' },
-            { year: '2015', title: 'Foo4 2016', cat: 'Web Applications' },
-            { year: '2015', title: 'Foo4 2016', cat: 'Web Applications' },
-            { year: '2015', title: 'Foo4 2016', cat: 'Web Applications' },
-            { year: '2015', title: 'Foo4 2016', cat: 'Web Applications' },
-            { year: '2015', title: 'Foo4 2016', cat: 'Web Applications' },
-            { year: '2015', title: 'Foo4 2016', cat: 'Web Applications' },
-            { year: '2014', title: 'Foo4 2016', cat: 'Music Projects' },
-            { year: '2014', title: 'Foo4 2016', cat: 'Music Projects' },
-            { year: '2014', title: 'Foo4 2016', cat: 'Music Projects' },
-            { year: '2014', title: 'Foo4 2016', cat: 'Music Projects' },
-            { year: '2014', title: 'Foo4 2016', cat: 'Music Projects' },
-            { year: '2014', title: 'Foo4 2016', cat: 'Music Projects' },
-            { year: '2014', title: 'Foo4 2016', cat: 'Music Projects' },
+            { started_at: '2018-12-01', title: 'Foo 2017', cat: 'Web Sites' },
+            { started_at: '2017-12-01', title: 'Foo2 2017', cat: 'Web Applications' },
+            { started_at: '2017-12-01', title: 'Foo3 2016', cat: 'Web Sites' },
+            { started_at: '2017-12-01', title: 'Foo4 2016', cat: 'Web Applications' },
+            { started_at: '2017-12-01', title: 'Foo4 2016', cat: 'Web Applications' },
+            { started_at: '2016-12-01', title: 'Foo4 2016', cat: 'Web Applications' },
+            { started_at: '2016-12-01', title: 'Foo4 2016', cat: 'Web Applications' },
+            { started_at: '2015-12-01', title: 'Foo4 2016', cat: 'Web Applications' },
+            { started_at: '2015-12-01', title: 'Foo4 2016', cat: 'Web Applications' },
+            { started_at: '2015-12-01', title: 'Foo4 2016', cat: 'Web Applications' },
+            { started_at: '2015-12-01', title: 'Foo4 2016', cat: 'Web Applications' },
+            { started_at: '2015-12-01', title: 'Foo4 2016', cat: 'Web Applications' },
+            { started_at: '2015-12-01', title: 'Foo4 2016', cat: 'Web Applications' },
+            { started_at: '2014-12-01', title: 'Foo4 2016', cat: 'Music Projects' },
+            { started_at: '2014-12-01', title: 'Foo4 2016', cat: 'Music Projects' },
+            { started_at: '2014-12-01', title: 'Foo4 2016', cat: 'Music Projects' },
+            { started_at: '2014-12-01', title: 'Foo4 2016', cat: 'Music Projects' },
+            { started_at: '2014-12-01', title: 'Foo4 2016', cat: 'Music Projects' },
+            { started_at: '2014-12-01', title: 'Foo4 2016', cat: 'Music Projects' },
+            { started_at: '2014-12-01', title: 'Foo4 2016', cat: 'Music Projects' },
         ],
         items: '',
         selected: '',
@@ -84,18 +85,20 @@ const app = new Vue({
             })
             this.yearFilter();
         },
-        // filter items to display the year prominently
+        // set item data and filter items to display the year prominently
         yearFilter: function (sort) {
             var current;
             var i = 0;
             this.items = this.items.filter(function (item) {
-                item.yearshow = false;
+                item.showYear = false;
+                item.year = moment(item.started_at).format('YYYY');
+                item.month = moment(item.started_at).format('MMMM');
                 if (i == 0) {
                     current = item.year;
-                    item.yearshow = true;
+                    item.showYear = true;
                 }
                 if (current != item.year) {
-                    item.yearshow = true;
+                    item.showYear = true;
                     current = item.year;
                 }
                 i++;

@@ -36,10 +36,10 @@
         <section class="timeline">
             <ul>
                 <template v-for="item in items">
-                    <li v-bind:class="{ 'li-spacer': item.yearshow }">
-                        <span v-show="item.yearshow" class="year">{{ item.year }}</span>
+                    <li v-bind:class="{ 'li-spacer': item.showYear }">
+                        <span v-show="item.showYear" class="year">{{ item.year }}</span>
                         <div>
-                            <time>{{ item.year }}</time> {{ item.title }}</div>
+                            <time>{{ item.month }}</time> {{ item.title }}</div>
                     </li>
                 </template>
             </ul>
