@@ -25,7 +25,7 @@ const app = new Vue({
 
         // calculate all items for options select
         var allItems = this.items.length;
-        this.options = [{ 'text': 'All projects (' + allItems + ')', 'value': '' }];
+        this.options = [{ 'text': 'All categories (' + allItems + ')', 'value': '' }];
 
         // calculate all items per category
         var count = {};
@@ -50,7 +50,7 @@ const app = new Vue({
             return b.count - a.count;
         }
         optionsFromList.sort(sort_categories);
-        
+
         Array.prototype.push.apply(this.options, optionsFromList);
 
         // filter items to display the year
