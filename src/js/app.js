@@ -1,34 +1,13 @@
+import list from '../data.json';
 import moment from 'moment';
 window.Vue = require('vue');
 
 const app = new Vue({
     el: '#app',
     data: {
-        list: [
-            { started_at: '2018-12-01', title: 'Foo 2017', cat: 'Web Sites' },
-            { started_at: '2017-12-01', title: 'Foo2 2017', cat: 'Web Applications' },
-            { started_at: '2017-12-01', title: 'Foo3 2016', cat: 'Web Sites' },
-            { started_at: '2017-12-01', title: 'Foo4 2016', cat: 'Web Applications' },
-            { started_at: '2017-12-01', title: 'Foo4 2016', cat: 'Web Applications' },
-            { started_at: '2016-12-01', title: 'Foo4 2016', cat: 'Web Applications' },
-            { started_at: '2016-12-01', title: 'Foo4 2016', cat: 'Web Applications' },
-            { started_at: '2015-12-01', title: 'Foo4 2016', cat: 'Web Applications' },
-            { started_at: '2015-12-01', title: 'Foo4 2016', cat: 'Web Applications' },
-            { started_at: '2015-12-01', title: 'Foo4 2016', cat: 'Web Applications' },
-            { started_at: '2015-12-01', title: 'Foo4 2016', cat: 'Web Applications' },
-            { started_at: '2015-12-01', title: 'Foo4 2016', cat: 'Web Applications' },
-            { started_at: '2015-12-01', title: 'Foo4 2016', cat: 'Web Applications' },
-            { started_at: '2014-12-01', title: 'Foo4 2016', cat: 'Music Projects' },
-            { started_at: '2014-12-01', title: 'Foo4 2016', cat: 'Music Projects' },
-            { started_at: '2014-12-01', title: 'Foo4 2016', cat: 'Music Projects' },
-            { started_at: '2014-12-01', title: 'Foo4 2016', cat: 'Music Projects' },
-            { started_at: '2014-12-01', title: 'Foo4 2016', cat: 'Music Projects' },
-            { started_at: '2014-12-01', title: 'Foo4 2016', cat: 'Music Projects' },
-            { started_at: '2014-12-01', title: 'Foo4 2016', cat: 'Music Projects' },
-        ],
-        items: '',
+        list: list,
+        items: [],
         selected: '',
-        numItems: 0,
         options: []
     },
     created: function () {
