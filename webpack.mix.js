@@ -15,7 +15,7 @@ mix
   .js('src/js/app.js', 'dist/app.js')
   .copy('src/css/styles.css', 'dist/styles.css')
   .browserSync({ 
-    proxy: 'http://vue-timeline.dev',
+    proxy: 'http://vue-timeline.dev/dist/',
     files: ['*', 'src/**/*']
   });
 
