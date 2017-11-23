@@ -2,6 +2,12 @@ import list from '../data.json';
 import moment from 'moment';
 window.Vue = require('vue');
 
+// first let's sort the json list data by started_at DESC
+function custom_sort(a, b) {
+    return new Date(b.started_at).getTime() - new Date(a.started_at).getTime();
+}
+list.sort(custom_sort);
+
 const app = new Vue({
     el: '#app',
     data: {
@@ -35,8 +41,16 @@ const app = new Vue({
             var option = {};
             option.text = item.cat + ' (' + count[item.cat] + ')';
             option.value = item.cat;
+            option.count = count[item.cat];
             return option;
         });
+
+        // sort categories by item count DESC
+        function sort_categories(a, b) {
+            return b.count - a.count;
+        }
+        optionsFromList.sort(sort_categories);
+        
         Array.prototype.push.apply(this.options, optionsFromList);
 
         // filter items to display the year
