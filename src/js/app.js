@@ -27,28 +27,39 @@ const app = new Vue({
         ],
         items: '',
         selected: '',
-        options: [
-            { 'text': 'All projects', 'value': '' }
-        ]
+        numItems: 0,
+        options: []
     },
     created: function () {
+        // add window scroll listener
         window.addEventListener('scroll', this.renderItems);
     },
     mounted: function () {
         this.items = this.list;
 
+        // calculate all items for options select
+        var allItems = this.items.length;
+        this.options = [{ 'text': 'All projects (' + allItems + ')', 'value': '' }];
+
+        // calculate all items per category
+        var count = {};
+        for (var i = 0, j = this.items.length; i < j; i++) {
+            count[this.items[i]['cat']] = (count[this.items[i]['cat']] || 0) + 1;
+        }
+        // build all select options from items
         var optionsFromList = this.items.filter(function (item, index, self) {
             return index === self.findIndex((i) => (
                 i.cat === item.cat
             ))
         }).map(function (item) {
             var option = {};
-            option.text = item.cat;
-            option.value = item.cat.trim();
+            option.text = item.cat + ' (' + count[item.cat] + ')';
+            option.value = item.cat;
             return option;
         });
         Array.prototype.push.apply(this.options, optionsFromList);
 
+        // filter items to display the year
         this.yearFilter();
     },
     watch: {
@@ -63,15 +74,17 @@ const app = new Vue({
         })
     },
     methods: {
+        // filter items by category
         itemsFilter: function (sort) {
             this.items = this.list;
 
             this.items = this.items.filter(function (item) {
-                var re = new RegExp(sort, 'g');
-                return item.cat.match(re)
+                var reg = new RegExp(sort, 'g');
+                return item.cat.match(reg)
             })
             this.yearFilter();
         },
+        // filter items to display the year prominently
         yearFilter: function (sort) {
             var current;
             var i = 0;
@@ -89,6 +102,7 @@ const app = new Vue({
                 return item;
             })
         },
+        // check if item is in viewport
         isElementInViewport: function (el) {
             var rect = el.getBoundingClientRect();
             return (
@@ -98,12 +112,14 @@ const app = new Vue({
                 rect.right <= (window.innerWidth || document.documentElement.clientWidth)
             );
         },
+        // hide all items on category change
         hideItemsBeforeRender: function () {
             var items = this.$el.querySelectorAll(".timeline li");
             for (var i = 0; i < items.length; i++) {
                 items[i].classList.remove("in-view");
             }
         },
+        // dispay items
         renderItems: function () {
             var items = this.$el.querySelectorAll(".timeline li");
             setTimeout(() => {
