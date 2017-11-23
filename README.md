@@ -1,6 +1,6 @@
 # vue-timeline - wip
 
-
+Inspired by George Martsouko's article at https://webdesign.tutsplus.com/tutorials/building-a-vertical-timeline-with-css-and-a-touch-of-javascript--cms-26528 -  Thank you!
 
 For the json data file I used https://www.json-generator.com
 
