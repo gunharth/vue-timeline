@@ -5,7 +5,7 @@ Demo: http://gunharth.io/vue-timeline/
 Inspired by George Martsoukos's article at [tuts+](https://webdesign.tutsplus.com/tutorials/building-a-vertical-timeline-with-css-and-a-touch-of-javascript--cms-26528)-  Thank you!
 
 
-For the json data file I used https://www.json-generator.com
+The src/data.json file was created with https://www.json-generator.com and the following template:
 
 ```js
 [
