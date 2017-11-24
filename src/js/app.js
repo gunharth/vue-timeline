@@ -2,9 +2,13 @@ import list from '../data.json';
 import moment from 'moment';
 window.Vue = require('vue');
 
-// first let's sort the json list data by started_at DESC
+// json field settings
+const timelineDate = 'started_at';
+const timelineCategory = 'cat';
+
+// sort the json list data by timelineDate DESC
 function custom_sort(a, b) {
-    return new Date(b.started_at).getTime() - new Date(a.started_at).getTime();
+    return new Date(b[timelineDate]).getTime() - new Date(a[timelineDate]).getTime();
 }
 list.sort(custom_sort);
 
@@ -30,18 +34,18 @@ const app = new Vue({
         // calculate all items per category
         var count = {};
         for (var i = 0, j = this.items.length; i < j; i++) {
-            count[this.items[i]['cat']] = (count[this.items[i]['cat']] || 0) + 1;
+            count[this.items[i][timelineCategory]] = (count[this.items[i][timelineCategory]] || 0) + 1;
         }
         // build all select options from items
         var optionsFromList = this.items.filter(function (item, index, self) {
             return index === self.findIndex((i) => (
-                i.cat === item.cat
+                i[timelineCategory] === item[timelineCategory]
             ))
         }).map(function (item) {
             var option = {};
-            option.text = item.cat + ' (' + count[item.cat] + ')';
-            option.value = item.cat;
-            option.count = count[item.cat];
+            option.text = item[timelineCategory] + ' (' + count[item[timelineCategory]] + ')';
+            option.value = item[timelineCategory];
+            option.count = count[item[timelineCategory]];
             return option;
         });
 
@@ -74,7 +78,7 @@ const app = new Vue({
 
             this.items = this.items.filter(function (item) {
                 var reg = new RegExp(sort, 'g');
-                return item.cat.match(reg)
+                return item[timelineCategory].match(reg)
             })
             this.yearFilter();
         },
@@ -84,8 +88,8 @@ const app = new Vue({
             var i = 0;
             this.items = this.items.filter(function (item) {
                 item.showYear = false;
-                item.year = moment(item.started_at).format('YYYY');
-                item.month = moment(item.started_at).format('MMMM');
+                item.year = moment(item[timelineDate]).format('YYYY');
+                item.month = moment(item[timelineDate]).format('MMMM');
                 if (i == 0) {
                     current = item.year;
                     item.showYear = true;
