@@ -1,6 +1,6 @@
 # vue-timeline - wip
 
-Demo: http://gunharth.io/vue-timeline/
+Demo: http://gunharth.io/projects
 
 Inspired by George Martsoukos's article at [tuts+](https://webdesign.tutsplus.com/tutorials/building-a-vertical-timeline-with-css-and-a-touch-of-javascript--cms-26528)-  Thank you!
 
